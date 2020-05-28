@@ -6,8 +6,8 @@ module.exports = {
     listSeeder:  async (userAccountService,listService) => {
         return new Promise(async (resolve, reject) => {
             try {
-                await userAccountService.dao.dbQuery('CREATE TABLE UserAccount(id INT AUTO_INCREMENT,displayName VARCHAR(255),login VARCHAR(255),password VARCHAR(255),PRIMARY KEY(id))')
-                await listService.dao.dbQuery(  "CREATE TABLE List(id INT AUTO_INCREMENT, shop VARCHAR(255)," +
+                await userAccountService.dao.dbQuery('CREATE TABLE useraccount(id INT AUTO_INCREMENT,displayName VARCHAR(255),login VARCHAR(255),password VARCHAR(255),PRIMARY KEY(id))')
+                await listService.dao.dbQuery(  "CREATE TABLE list(id INT AUTO_INCREMENT, shop VARCHAR(255)," +
                                                     "date_achat DATE,is_archived BOOLEAN,user_id INT, FOREIGN KEY(user_id) REFERENCES UserAccount(id), PRIMARY KEY(id))");
             }
             catch (e) {

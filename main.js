@@ -61,7 +61,7 @@ const userAccountService = new UserAccountService(db)
 const jwt = require('./jwt')(userAccountService)
 
 require('./api/listApi')(app, listService,jwt);
-require('./api/itemApi')(app, itemService,jwt);
+require('./api/itemApi')(app, itemService,listService,jwt);
 require('./api/userApi')(app, userAccountService,jwt);
 
 connectDB().then(async (db)=>{

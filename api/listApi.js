@@ -9,6 +9,8 @@ module.exports = (app, listservice,jwt) => {
 
     app.get("/list/:id",jwt.validateJWT,async (req,res)=>{
         try{
+            console.log(req.user)
+
             const list = await listservice.dao.getById(req.params.id);
             if (list === undefined){
                 return res.status(404).end();
@@ -52,7 +54,7 @@ module.exports = (app, listservice,jwt) => {
         if (list === undefined){
             return res.status(404).end;
         }
-        if (list.user_id !== req.user[0].id) {
+        if (list[0].user_id !== req.user[0].id) {
             return res.status(403).end()
         }
         listservice.dao.delete(req.params.id)

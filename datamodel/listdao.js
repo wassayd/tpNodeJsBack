@@ -18,6 +18,6 @@ module.exports = class ListDAO extends BaseDAO {
     }
 
     insert(list){
-        return this.dbQuery('INSERT INTO List(shop,date_achat,user_id,is_archived) VALUES (?,?,?,0)',[list.shop,list.date_achat,list.user_id])
+        return this.dbQuery('INSERT INTO List(shop,date_achat,user_id,is_archived) VALUES (?,?,?,?)',[list.shop,list.date_achat,list.user_id,list.is_archived])
     }
 };
