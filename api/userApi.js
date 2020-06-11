@@ -19,5 +19,32 @@ module.exports = (app, svc, jwt) => {
                 res.status(500).end()
             })
 
+    });
+
+    app.get('/useraccount/user/:login',async(req,res)=>{
+        try{
+            const user = (await svc.dao.getByLogin(req.params.login))[0];
+            console.log(user)
+            if (user === undefined || user.length === 0){
+                return res.status(404).end();
+            }
+            res.json(user);
+        }catch (e) {
+            console.log(e);
+            res.status(404).end();
+        }
+    })
+    app.get('/useraccount/userid/:id',async(req,res)=>{
+        try{
+            const user = (await svc.dao.getById(req.params.id))[0];
+            console.log(user)
+            if (user === undefined || user.length === 0){
+                return res.status(404).end();
+            }
+            res.json(user);
+        }catch (e) {
+            console.log(e);
+            res.status(404).end();
+        }
     })
 }

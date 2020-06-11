@@ -3,12 +3,15 @@ const Item = require('./Item');
 
 module.exports = {
 
-    listSeeder:  async (userAccountService,listService) => {
+    listSeeder:  async (userAccountService,listService,listSharedService) => {
         return new Promise(async (resolve, reject) => {
             try {
                 await userAccountService.dao.dbQuery('CREATE TABLE useraccount(id INT AUTO_INCREMENT,displayName VARCHAR(255),login VARCHAR(255),password VARCHAR(255),PRIMARY KEY(id))')
                 await listService.dao.dbQuery(  "CREATE TABLE list(id INT AUTO_INCREMENT, shop VARCHAR(255)," +
-                                                    "date_achat DATE,is_archived BOOLEAN,user_id INT, FOREIGN KEY(user_id) REFERENCES UserAccount(id), PRIMARY KEY(id))");
+                                                    "date_achat DATE,is_archived BOOLEAN,user_id INT, FOREIGN KEY(user_id) REFERENCES useraccount(id), PRIMARY KEY(id))");
+
+                await listSharedService.dao.dbQuery("CREATE TABLE list_shared(id INT AUTO_INCREMENT,is_update BOOLEAN,is_view BOOLEAN,user_id INT,list_id INT," +
+                    "FOREIGN KEY(user_id) REFERENCES useraccount(id),FOREIGN KEY(list_id) REFERENCES list(id),PRIMARY KEY(id))")
             }
             catch (e) {
                 if (e.errno === 1050){ //TABLE ALREADY EXISTS
@@ -59,7 +62,7 @@ module.exports = {
             }
             // INSERTs
             for (let i = 0; i < 5; i++) {
-                await itemService.dao.insert( new Item("label"+i,i* Math.random() * 100))
+                await itemService.dao.insert( new Item("label"+i,i* Math.random() * 100,1))
             }
             resolve()
         })

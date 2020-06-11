@@ -1,9 +1,9 @@
 module.exports = class Item {
-    constructor(label,quantity) {
+    constructor(label,quantity,list_id) {
         this.label    = label;
         this.quantity = quantity;
         this.checked  = false;
-        this.list     = null;
+        this.list_id     = list_id;
     }
 
     setList(list){

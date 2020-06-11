@@ -9,6 +9,7 @@ const app = express();
 const ItemService = require("./services/itemservice");
 const ListService = require("./services/listservice");
 const UserAccountService = require("./services/userservice")
+const ListSharedService = require('./services/listSharedService')
 
 app.use(bodyParser.urlencoded({ extended: false })) ;// URLEncoded form data
 app.use(bodyParser.json()); // application/json
@@ -56,18 +57,22 @@ function connectDB(){
 
 let itemService = new ItemService(db);
 let listService = new ListService(db);
-const seeder    = require('./datamodel/seeder');
-const userAccountService = new UserAccountService(db)
-const jwt = require('./jwt')(userAccountService)
+let listSharedService = new ListSharedService(db);
 
-require('./api/listApi')(app, listService,jwt);
-require('./api/itemApi')(app, itemService,listService,jwt);
+const seeder    = require('./datamodel/seeder');
+const userAccountService = new UserAccountService(db);
+const jwt = require('./jwt')(userAccountService);
+
+require('./api/listApi')(app, listService,jwt,listSharedService);
+require('./api/itemApi')(app, itemService,listService,listSharedService,jwt);
 require('./api/userApi')(app, userAccountService,jwt);
+require('./api/listSharedApi')(app,listService,listSharedService,jwt);
 
 connectDB().then(async (db)=>{
      itemService = new ItemService(db);
      listService = new ListService(db);
-    await seeder.listSeeder(userAccountService,listService);
+    listSharedService = new ListSharedService(db);
+    await seeder.listSeeder(userAccountService,listService,listSharedService);
     await seeder.itemSeeder(itemService);
 
 }).then(app.listen(3333))

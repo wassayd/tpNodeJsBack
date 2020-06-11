@@ -5,11 +5,10 @@ module.exports = class UserDAO extends BaseDAO {
         super(db, "UserAccount")
     }
     insert(user) {
-        return this.dbQuery("INSERT INTO UserAccount(displayname,login,password) VALUES (?,?,?)",
+        return this.dbQuery("INSERT INTO useraccount(displayname,login,password) VALUES (?,?,?)",
             [user.displayName,user.login, user.password])
     }
     getByLogin(login) {
-        return this.dbQuery("SELECT * FROM UserAccount WHERE login=?", [ login ])
-
+        return this.dbQuery("SELECT * FROM useraccount WHERE login=?", [ login ])
     }
 };
